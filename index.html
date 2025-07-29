@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Números en Chino Mandarín</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 10px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.9rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        td {
+            padding: 15px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+        .chinese-char {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #d63031;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .pinyin {
+            font-style: italic;
+            color: #6c5ce7;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .pronunciation {
+            color: #00b894;
+            font-weight: 500;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn.playing {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .number-col {
+            color: #2d3436;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Optimización para móviles */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            th, td {
+                padding: 12px 6px;
+                font-size: 0.85rem;
+            }
+            
+            .chinese-char {
+                font-size: 2rem;
+            }
+            
+            .pinyin {
+                font-size: 1rem;
+            }
+            
+            .play-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            th, td {
+                padding: 10px 4px;
+                font-size: 0.8rem;
+            }
+            
+            .chinese-char {
+                font-size: 1.8rem;
+            }
+            
+            .pinyin {
+                font-size: 0.9rem;
+            }
+            
+            .play-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Efectos táctiles para móviles */
+        @media (hover: none) and (pointer: coarse) {
+            .play-btn:active {
+                transform: scale(0.9);
+                transition: transform 0.1s;
+            }
+            
+            tr:active {
+                background: rgba(102, 126, 234, 0.15);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>数字 - Números en Chino</h1>
+            <p>Aprende los números del 1 al 10 en mandarín</p>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>汉字</th>
+                        <th>Pinyin</th>
+                        <th>Pronunciación</th>
+                        <th>🔊</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="number-col">uno</td>
+                        <td class="chinese-char">一</td>
+                        <td class="pinyin">yī</td>
+                        <td class="pronunciation">/i/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('yi', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">dos</td>
+                        <td class="chinese-char">二</td>
+                        <td class="pinyin">èr</td>
+                        <td class="pronunciation">/ɚ/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('er', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">tres</td>
+                        <td class="chinese-char">三</td>
+                        <td class="pinyin">sān</td>
+                        <td class="pronunciation">/san/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('san', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">cuatro</td>
+                        <td class="chinese-char">四</td>
+                        <td class="pinyin">sì</td>
+                        <td class="pronunciation">/sɨ/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('si', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">cinco</td>
+                        <td class="chinese-char">五</td>
+                        <td class="pinyin">wǔ</td>
+                        <td class="pronunciation">/u/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('wu', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">seis</td>
+                        <td class="chinese-char">六</td>
+                        <td class="pinyin">liù</td>
+                        <td class="pronunciation">/liou/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('liu', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">siete</td>
+                        <td class="chinese-char">七</td>
+                        <td class="pinyin">qī</td>
+                        <td class="pronunciation">/tʃi/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('qi', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">ocho</td>
+                        <td class="chinese-char">八</td>
+                        <td class="pinyin">bā</td>
+                        <td class="pronunciation">/pa/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('ba', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">nueve</td>
+                        <td class="chinese-char">九</td>
+                        <td class="pinyin">jiǔ</td>
+                        <td class="pronunciation">/dʒiou/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('jiu', this)">▶</button></td>
+                    </tr>
+                    <tr>
+                        <td class="number-col">diez</td>
+                        <td class="chinese-char">十</td>
+                        <td class="pinyin">shí</td>
+                        <td class="pronunciation">/ʃɨ/</td>
+                        <td><button class="play-btn" onclick="playPronunciation('shi', this)">▶</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Síntesis de voz para pronunciación
+        function playPronunciation(text, button) {
+            if ('speechSynthesis' in window) {
+                // Detener cualquier síntesis anterior
+                speechSynthesis.cancel();
+                
+                // Agregar efecto visual
+                button.classList.add('playing');
+                button.innerHTML = '⏸';
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN'; // Chino mandarín
+                utterance.rate = 0.7; // Velocidad más lenta para mejor comprensión
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                // Cuando termine la pronunciación
+                utterance.onend = function() {
+                    button.classList.remove('playing');
+                    button.innerHTML = '▶';
+                };
+                
+                // En caso de error
+                utterance.onerror = function() {
+                    button.classList.remove('playing');
+                    button.innerHTML = '▶';
+                    alert('Error al reproducir el audio. Verifica que tu dispositivo tenga soporte para síntesis de voz en chino.');
+                };
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Tu navegador no soporta síntesis de voz. Intenta con Chrome o Firefox.');
+            }
+        }
+        
+        // Prevenir zoom en dispositivos móviles al hacer doble tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            let now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Mejorar la experiencia táctil
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.play-btn');
+            buttons.forEach(button => {
+                // Agregar feedback táctil
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
